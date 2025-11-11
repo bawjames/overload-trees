@@ -1,0 +1,31 @@
+Instead of each function type signature having a linear curried structure, we instead represent its type as a tree.
+
+The root node contains universal quantifiers, such as ∀.
+Note that some amount of renaming of variables (α-conversion) is required to prevent name conflicts within the tree.
+
+When partially applying, simply traverse one node down the tree, discarding the rest, and the resulting function has the type signature of the remaining subtree.
+
+sub : Int -> Int -> Int
+.
+╰Int─Int─Int
+
+add : Int -> Int -> Int
+add : Float -> Float -> Float
+add : Double -> Double -> Double
+add : Int -> Float -> Float
+add : Float -> Int -> Float
+.
+├Double─Double─Double
+├Float┬Float─Float
+│     ╰Int─Float
+╰Int┬Int─Int
+    ╰Float─Float
+
+compose : (b -> c) -> (a -> b) -> a -> c
+
+∀a,
+∀b,
+∀c.
+  ╰.─.─a─c
+   │ ╰a─b
+   ╰b─c
